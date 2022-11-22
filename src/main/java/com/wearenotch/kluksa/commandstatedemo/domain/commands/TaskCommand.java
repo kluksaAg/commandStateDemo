@@ -16,8 +16,8 @@ import org.jetbrains.annotations.NotNull;
     @JsonSubTypes.Type(value = CancelTaskCommand.class, name = "cancel"),
     @JsonSubTypes.Type(value = FinishTaskCommand.class, name = "finish")
 })
-public abstract class AbstractTaskCommand {
+public interface TaskCommand {
 
-    public abstract Task execute(@NotNull final Task task);
+    Task execute(@NotNull final Task task);
 
 }

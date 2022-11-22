@@ -2,13 +2,11 @@ package com.wearenotch.kluksa.commandstatedemo.domain.state;
 
 
 import com.wearenotch.kluksa.commandstatedemo.domain.TaskDataContext;
-import com.wearenotch.kluksa.commandstatedemo.domain.events.StateChangeEvent;
 
 public class ActiveTask extends Task {
 
   public ActiveTask(TaskDataContext ctx) {
     super(Status.ACTIVE, ctx);
-    ctx.publish(new StateChangeEvent(this.getClass().getName()));
   }
 
   @Override

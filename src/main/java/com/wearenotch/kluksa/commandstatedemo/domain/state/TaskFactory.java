@@ -5,19 +5,15 @@ import com.wearenotch.kluksa.commandstatedemo.persistence.domain.TaskEntity;
 import com.wearenotch.kluksa.commandstatedemo.persistence.repository.TaskEntityRepository;
 import com.wearenotch.kluksa.commandstatedemo.service.dto.TaskSubmitDto;
 import org.jetbrains.annotations.NotNull;
-import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Component;
 
 @Component
 public class TaskFactory {
 
   private final TaskEntityRepository repository;
-  private final ApplicationEventPublisher publisher;
 
-  public TaskFactory(final TaskEntityRepository repository,
-                     final ApplicationEventPublisher eventPublisher) {
+  public TaskFactory(final TaskEntityRepository repository) {
     this.repository = repository;
-    this.publisher = eventPublisher;
   }
 
   public Task from(@NotNull final TaskSubmitDto dto) {
@@ -34,7 +30,7 @@ public class TaskFactory {
   }
 
   public Task from(@NotNull final TaskEntity entity){
-    TaskDataContext ctx = new TaskDataContext(publisher, entity);
+    TaskDataContext ctx = new TaskDataContext(entity);
     return getTask(entity, ctx);
   }
 

@@ -1,20 +1,9 @@
 package com.wearenotch.kluksa.commandstatedemo.domain;
 
-import com.wearenotch.kluksa.commandstatedemo.domain.events.StateChangeEvent;
 import com.wearenotch.kluksa.commandstatedemo.domain.state.Task;
 import com.wearenotch.kluksa.commandstatedemo.persistence.domain.TaskEntity;
-import org.jetbrains.annotations.NotNull;
-import org.springframework.context.ApplicationEventPublisher;
 
-public class TaskDataContext {
-    private final ApplicationEventPublisher publisher;
-    private final TaskEntity entity;
-
-    public TaskDataContext(ApplicationEventPublisher publisher,
-                           TaskEntity entity) {
-        this.publisher = publisher;
-        this.entity = entity;
-    }
+public record TaskDataContext(TaskEntity entity) {
 
     public TaskEntity setTitle(String title) {
         return entity.setTitle(title);
@@ -44,7 +33,4 @@ public class TaskDataContext {
         return entity.getApproved();
     }
 
-    public void publish(@NotNull final StateChangeEvent event) {
-        publisher.publishEvent(event);
-    }
 }

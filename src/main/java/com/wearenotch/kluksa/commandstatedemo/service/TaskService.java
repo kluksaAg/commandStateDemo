@@ -1,15 +1,17 @@
 package com.wearenotch.kluksa.commandstatedemo.service;
 
+import com.wearenotch.kluksa.commandstatedemo.domain.commands.TaskCommand;
 import com.wearenotch.kluksa.commandstatedemo.domain.state.Task;
 import com.wearenotch.kluksa.commandstatedemo.domain.state.TaskFactory;
 import com.wearenotch.kluksa.commandstatedemo.persistence.repository.TaskEntityRepository;
 import com.wearenotch.kluksa.commandstatedemo.service.dto.TaskDetailsDto;
 import com.wearenotch.kluksa.commandstatedemo.service.dto.TaskSubmitDto;
-import com.wearenotch.kluksa.commandstatedemo.domain.commands.AbstractTaskCommand;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import java.util.*;
+
+import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional
@@ -47,7 +49,7 @@ public class TaskService {
 
     @NotNull
     public Optional<TaskDetailsDto> executeCommand(@NotNull final Long taskId,
-                                                   @NotNull final AbstractTaskCommand command) {
+                                                   @NotNull final TaskCommand command) {
         return getTask(taskId)
             .map(command::execute)
             .map(Task::toDto);

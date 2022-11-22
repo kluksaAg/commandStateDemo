@@ -1,30 +1,22 @@
 package com.wearenotch.kluksa.commandstatedemo.domain.state;
 
 import com.wearenotch.kluksa.commandstatedemo.domain.TaskDataContext;
-import com.wearenotch.kluksa.commandstatedemo.domain.events.StateChangeEvent;
 import com.wearenotch.kluksa.commandstatedemo.persistence.domain.TaskEntity;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.ArgumentMatcher;
-import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.context.ApplicationEventPublisher;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.*;
 
 @ExtendWith(MockitoExtension.class)
 class ActiveTaskTest {
 
-  @Mock
-  private ApplicationEventPublisher publisher;
   private Task task;
 
   @BeforeEach
   public void setup(){
-    var ctx = new TaskDataContext(publisher, new TaskEntity().setTitle("TITLE"));
+    var ctx = new TaskDataContext(new TaskEntity().setTitle("TITLE"));
     this.task = new ActiveTask(ctx);
   }
 
@@ -67,8 +59,6 @@ class ActiveTaskTest {
 
   private void verifyNewState(Task newState, Class<? extends  Task> expectedClass) {
     assertInstanceOf(expectedClass, newState);
-    Mockito.verify(publisher).publishEvent(
-        argThat((ArgumentMatcher<StateChangeEvent>) event -> event.getStateName().equals(expectedClass.getName())));
   }
 
   @Test

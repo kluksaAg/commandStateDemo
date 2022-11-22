@@ -1,8 +1,8 @@
 package com.wearenotch.kluksa.commandstatedemo.web.rest;
 
-import com.wearenotch.kluksa.commandstatedemo.domain.commands.AbstractTaskCommand;
-import com.wearenotch.kluksa.commandstatedemo.service.dto.TaskDetailsDto;
+import com.wearenotch.kluksa.commandstatedemo.domain.commands.TaskCommand;
 import com.wearenotch.kluksa.commandstatedemo.service.TaskService;
+import com.wearenotch.kluksa.commandstatedemo.service.dto.TaskDetailsDto;
 import com.wearenotch.kluksa.commandstatedemo.service.dto.TaskSubmitDto;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -45,7 +45,7 @@ public class TasksResource {
 
     @PutMapping("/{id}")
     public ResponseEntity<TaskDetailsDto> sendCommandToTask(@PathVariable("id") final long id,
-                                               @RequestBody AbstractTaskCommand command) {
+                                               @RequestBody TaskCommand command) {
 
         return taskService.executeCommand(id, command)
             .map(dto -> ResponseEntity.accepted().body(dto))

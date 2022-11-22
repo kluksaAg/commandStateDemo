@@ -14,6 +14,7 @@
     <name>commandStateDemo</name>
     <description>commandStateDemo</description>
     <properties>
+        <cucumber.version>7.8.1</cucumber.version>
         <java.version>17</java.version>
     </properties>
     <dependencies>
@@ -46,12 +47,35 @@
             <version>23.0.0</version>
         </dependency>
         <dependency>
-            <artifactId>cucumber-java</artifactId>
             <groupId>io.cucumber</groupId>
+            <artifactId>cucumber-core</artifactId>
+            <version>${cucumber.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>io.cucumber</groupId>
+            <artifactId>cucumber-java</artifactId>
+            <version>${cucumber.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>io.cucumber</groupId>
+            <artifactId>cucumber-junit</artifactId>
+            <version>${cucumber.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>io.cucumber</groupId>
+            <artifactId>cucumber-spring</artifactId>
+            <version>${cucumber.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>io.cucumber</groupId>
+            <artifactId>cucumber-junit-platform-engine</artifactId>
             <version>7.8.1</version>
             <scope>test</scope>
         </dependency>
-
     </dependencies>
 
     <build>

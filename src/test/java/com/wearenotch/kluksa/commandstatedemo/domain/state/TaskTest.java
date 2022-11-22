@@ -8,14 +8,10 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;
-import org.mockito.Mock;
-import org.springframework.context.ApplicationEventPublisher;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class TaskTest {
-  @Mock
-  private ApplicationEventPublisher publisher;
   private TaskDataContext ctx;
   private Task task;
   private final Long id = 1L;
@@ -23,7 +19,7 @@ class TaskTest {
 
   @BeforeEach
   void setUp() {
-    this.ctx = new TaskDataContext(publisher, new TaskEntity().setId(id).setTitle(title).setApproved(true));
+    this.ctx = new TaskDataContext(new TaskEntity().setId(id).setTitle(title).setApproved(true));
     this.task = getTask(Task.Status.ACTIVE, ctx);
   }
 
@@ -64,28 +60,28 @@ class TaskTest {
 
   @Test
   void toDto(){
-    TaskDataContext taskDataContext = new TaskDataContext(publisher, new TaskEntity().setId(id).setTitle(title).setApproved(true));
+    TaskDataContext taskDataContext = new TaskDataContext(new TaskEntity().setId(id).setTitle(title).setApproved(true));
     TaskDetailsDto dto = getTask(null, taskDataContext).toDto();
     assertEquals(id, dto.getId());
     assertEquals(title, dto.getTitle());
-    assertTrue(dto.getApproved());
+    assertTrue(dto.isApproved());
 
-    taskDataContext = new TaskDataContext(publisher, new TaskEntity().setId(id).setTitle(title).setApproved(false));
+    taskDataContext = new TaskDataContext(new TaskEntity().setId(id).setTitle(title).setApproved(false));
     dto = getTask(null, taskDataContext).toDto();
     assertEquals(id, dto.getId());
     assertEquals(title, dto.getTitle());
-    assertFalse(dto.getApproved());
+    assertFalse(dto.isApproved());
   }
 
   @ParameterizedTest
   @EnumSource(Task.Status.class)
   void toDto(Task.Status status) {
-    final TaskDataContext taskDataContext = new TaskDataContext(publisher, new TaskEntity().setId(id).setTitle(title).setApproved(true));
+    final TaskDataContext taskDataContext = new TaskDataContext(new TaskEntity().setId(id).setTitle(title).setApproved(true));
     final TaskDetailsDto dto = getTask(status, taskDataContext).toDto();
     assertEquals(status, dto.getStatus());
     assertEquals(id, dto.getId());
     assertEquals(title, dto.getTitle());
-    assertTrue(dto.getApproved());
+    assertTrue(dto.isApproved());
   }
 
   @Test

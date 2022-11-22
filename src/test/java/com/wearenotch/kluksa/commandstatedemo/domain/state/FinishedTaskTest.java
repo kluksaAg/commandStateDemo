@@ -5,21 +5,18 @@ import com.wearenotch.kluksa.commandstatedemo.persistence.domain.TaskEntity;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.context.ApplicationEventPublisher;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @ExtendWith(MockitoExtension.class)
 class FinishedTaskTest {
-  @Mock
-  private ApplicationEventPublisher publisher;
   private Task task;
 
   @BeforeEach
   public void setup(){
-    var ctx = new TaskDataContext(publisher, new TaskEntity().setTitle("TITLE"));
+    var ctx = new TaskDataContext(new TaskEntity().setTitle("TITLE"));
     this.task = new FinishedTask(ctx);
   }
 
@@ -31,36 +28,31 @@ class FinishedTaskTest {
 
   @Test
   void cancel() {
-    assertThrows(UnsupportedOperationException.class, ()->task.cancel());
+    assertThrows(IllegalStateException.class, task::cancel);
   }
 
   @Test
   void complete() {
-    final Task newState = task.complete();
-    assertEquals(task, newState);
+    assertThrows(IllegalStateException.class, task::cancel);
   }
 
   @Test
   void approve() {
-    final Task newState = task.approve();
-    assertEquals(task, newState);
+    assertThrows(IllegalStateException.class, task::cancel);
   }
 
   @Test
   void reject() {
-    final Task newState = task.reject();
-    assertEquals(task, newState);
+    assertThrows(IllegalStateException.class, task::cancel);
   }
 
   @Test
   void makeReady() {
-    final Task newState = task.makeReady();
-    assertEquals(task, newState);
+    assertThrows(IllegalStateException.class, task::cancel);
   }
 
   @Test
   void changeTitle() {
-    final String new_title = "NEW TITLE";
-    assertThrows(UnsupportedOperationException.class, ()->task.setTitle(new_title));
+    assertThrows(IllegalStateException.class, task::cancel);
   }
 }

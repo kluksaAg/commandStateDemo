@@ -7,7 +7,7 @@ import org.jetbrains.annotations.NotNull;
 
 import javax.validation.constraints.NotBlank;
 
-public class ChangeTitleCommand extends AbstractTaskCommand {
+public class ChangeTitleCommand implements TaskCommand {
 
   @NotBlank private final String title;
 

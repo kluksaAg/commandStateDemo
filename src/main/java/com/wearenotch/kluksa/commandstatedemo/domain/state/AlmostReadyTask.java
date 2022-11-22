@@ -1,13 +1,11 @@
 package com.wearenotch.kluksa.commandstatedemo.domain.state;
 
 import com.wearenotch.kluksa.commandstatedemo.domain.TaskDataContext;
-import com.wearenotch.kluksa.commandstatedemo.domain.events.StateChangeEvent;
 
 public class AlmostReadyTask extends Task {
 
   public AlmostReadyTask(TaskDataContext ctx) {
-    super(Status.READY, ctx);
-    ctx.publish(new StateChangeEvent(this.getClass().getName()));
+    super(Status.ALMOST_READY, ctx);
   }
 
   @Override
