@@ -24,20 +24,19 @@ public class TasksResource {
     }
 
     @GetMapping("/{id}")
-    public @NotNull ResponseEntity<TaskDetailsDto> getTask(@PathVariable(name = "id") final long id) {
+    public @NotNull @org.jetbrains.annotations.NotNull ResponseEntity<TaskDetailsDto> getTask(@PathVariable(name = "id") final long id) {
         final Optional<TaskDetailsDto> taskDetails = this.taskService.getTaskDetails(id);
         return ResponseEntity.of(taskDetails);
     }
 
     @GetMapping("")
-    public ResponseEntity<List<TaskDetailsDto>> getAllTasks() {
+    public @org.jetbrains.annotations.NotNull ResponseEntity<List<TaskDetailsDto>> getAllTasks() {
         final List<TaskDetailsDto> page = this.taskService.getTasks();
         return new ResponseEntity<>(page, HttpStatus.OK);
     }
 
-
     @PostMapping
-    public @NotNull ResponseEntity<TaskDetailsDto> submitTask(@RequestBody final TaskSubmitDto dto) {
+    public @NotNull @org.jetbrains.annotations.NotNull ResponseEntity<TaskDetailsDto> submitTask(@RequestBody final @org.jetbrains.annotations.NotNull TaskSubmitDto dto) {
         final TaskDetailsDto detailsDto = taskService.submit(dto);
         final URI location = URI.create("/tasks/" + detailsDto.getId());
         return ResponseEntity.created(location).body(detailsDto);
@@ -45,10 +44,10 @@ public class TasksResource {
 
     @PutMapping("/{id}")
     public ResponseEntity<TaskDetailsDto> sendCommandToTask(@PathVariable("id") final long id,
-                                               @RequestBody TaskCommand command) {
+                                                            @RequestBody @org.jetbrains.annotations.NotNull TaskCommand command) {
 
         return taskService.executeCommand(id, command)
-            .map(dto -> ResponseEntity.accepted().body(dto))
-            .orElseGet(() -> ResponseEntity.notFound().build());
+                .map(dto -> ResponseEntity.accepted().body(dto))
+                .orElseGet(() -> ResponseEntity.notFound().build());
     }
 }

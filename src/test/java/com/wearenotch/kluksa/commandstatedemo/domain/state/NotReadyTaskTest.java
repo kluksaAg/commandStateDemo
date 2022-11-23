@@ -7,22 +7,24 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 
 @ExtendWith(MockitoExtension.class)
-class CanceledTaskTest {
+class NotReadyTaskTest {
     private Task task;
 
     @BeforeEach
     public void setup() {
         var ctx = new TaskDataContext(new TaskEntity().setTitle("TITLE"));
-        this.task = Task.Status.CANCELED.createTask(ctx);
+        this.task = Task.Status.NOT_READY.createTask(ctx);
     }
 
     @Test
     void newTask() {
-        assertEquals(((AbstractTask) task).getContext().getStatus(), Task.Status.CANCELED);
+        assertEquals(((AbstractTask) task).getContext().getStatus(), Task.Status.NOT_READY);
     }
+
 
     @Test
     void cancel() {
@@ -32,21 +34,26 @@ class CanceledTaskTest {
 
     @Test
     void complete() {
-        assertThrows(IllegalStateException.class, task::complete);
+        final Task newState = task.complete();
+        assertEquals(task, newState);
     }
 
     @Test
     void approve() {
-        assertThrows(IllegalStateException.class, task::approve);
+        final Task newState = task.approve();
+        assertInstanceOf(ReadyTask.class, newState);
     }
 
     @Test
     void reject() {
-        assertThrows(IllegalStateException.class, task::reject);
+        final Task newState = task.reject();
+        assertEquals(task, newState);
     }
 
     @Test
     void changeTitle() {
-        assertThrows(IllegalStateException.class, () -> task.setTitle("TITLE"));
+        final String new_title = "NEW TITLE";
+        task.setTitle(new_title);
+        assertEquals(new_title, ((AbstractTask) task).getContext().getTitle());
     }
 }

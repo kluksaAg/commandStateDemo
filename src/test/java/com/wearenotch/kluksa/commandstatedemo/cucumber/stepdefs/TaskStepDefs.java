@@ -6,10 +6,12 @@ import com.wearenotch.kluksa.commandstatedemo.persistence.domain.TaskEntity;
 import com.wearenotch.kluksa.commandstatedemo.persistence.repository.TaskEntityRepository;
 import com.wearenotch.kluksa.commandstatedemo.web.rest.TasksResource;
 import io.cucumber.java.Before;
+import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import io.cucumber.spring.CucumberContextConfiguration;
+import org.jetbrains.annotations.Nullable;
 import org.junit.jupiter.api.BeforeEach;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -40,7 +42,7 @@ public class TaskStepDefs {
     private TaskEntityRepository repository;
     @Autowired
     private MockMvc mockMvc;
-    private Exception lastException;
+    private @Nullable Exception lastException;
     private Task.Status status;
     private ResultActions actions;
     private TaskEntity entity;
@@ -86,9 +88,9 @@ public class TaskStepDefs {
         entity = new TaskEntity()
                 .setTitle(TITLE)
                 .setStatus(status);
-        if (status == Task.Status.READY)
+        if (status == Task.Status.READY || status == Task.Status.COMPLETED)
             entity.setApproved(true);
-        if (status == Task.Status.ALMOST_READY)
+        if (status == Task.Status.NOT_READY)
             entity.setApproved(false);
         repository.saveAndFlush(entity);
     }
@@ -142,17 +144,32 @@ public class TaskStepDefs {
     }
 
     @When("Tile is changed to {string}")
-    public void tileIsChangedToNEWTITLE(String title) throws Exception {
-        actions = mockMvc.perform(put("/tasks/" + entity.getId())
-                .contentType(MediaType.APPLICATION_JSON)
-                .content("{ \"cmd\": \"change-title\", \"title\":\"" + title + "\"}")
-                .accept(MediaType.APPLICATION_JSON));
+    public void tileIsChangedToNEWTITLE(String title) {
+        try {
+            lastException = null;
 
+            actions = mockMvc.perform(put("/tasks/" + entity.getId())
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content("{ \"cmd\": \"change-title\", \"title\":\"" + title + "\"}")
+                    .accept(MediaType.APPLICATION_JSON));
+        } catch (Exception ex) {
+            this.lastException = ex;
+        }
     }
 
     @Then("{string} is thrown")
     public void commandIsNotAccepted(String exceptionStr) {
         assertEquals(exceptionStr, lastException.getCause().getClass().getSimpleName());
         assertNull(actions);
+    }
+
+    @And("Approved is {string}")
+    public void approvedIsApproved(@Nullable String str) throws Exception {
+        if (str != null && !str.trim().isBlank())
+            if ("NULL".equals(str))
+                actions.andExpect(jsonPath("$.approved").isEmpty());
+            else
+                actions.andExpect(jsonPath("$.approved").value(Boolean.valueOf(str)));
+
     }
 }

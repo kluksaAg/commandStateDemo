@@ -32,7 +32,7 @@ public class TaskEntity implements Serializable {
         return id;
     }
 
-    public TaskEntity setId(Long id) {
+    public @org.jetbrains.annotations.NotNull TaskEntity setId(Long id) {
         this.id = id;
         return this;
     }
@@ -41,7 +41,7 @@ public class TaskEntity implements Serializable {
         return title;
     }
 
-    public TaskEntity setTitle(@NotNull final String title) {
+    public @org.jetbrains.annotations.NotNull TaskEntity setTitle(@NotNull final String title) {
         this.title = title;
         return this;
     }
@@ -50,7 +50,7 @@ public class TaskEntity implements Serializable {
         return status;
     }
 
-    public TaskEntity setStatus(Task.Status status) {
+    public @org.jetbrains.annotations.NotNull TaskEntity setStatus(Task.Status status) {
         this.status = status;
         return this;
     }
@@ -59,7 +59,7 @@ public class TaskEntity implements Serializable {
         return approved;
     }
 
-    public TaskEntity setApproved(Boolean approved) {
+    public @org.jetbrains.annotations.NotNull TaskEntity setApproved(Boolean approved) {
         this.approved = approved;
         return this;
     }

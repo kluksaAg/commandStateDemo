@@ -6,18 +6,17 @@ import com.wearenotch.kluksa.commandstatedemo.domain.state.Task;
 import org.jetbrains.annotations.NotNull;
 
 @JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    property = "cmd")
+        use = JsonTypeInfo.Id.NAME,
+        property = "cmd")
 @JsonSubTypes({
-    @JsonSubTypes.Type(value = ChangeTitleCommand.class, name = "change-title"),
-    @JsonSubTypes.Type(value = ApproveCommand.class, name = "approve"),
-    @JsonSubTypes.Type(value = RejectCommand.class, name = "reject"),
-    @JsonSubTypes.Type(value = MakeReadyCommand.class, name = "make-ready"),
-    @JsonSubTypes.Type(value = CancelTaskCommand.class, name = "cancel"),
-    @JsonSubTypes.Type(value = FinishTaskCommand.class, name = "finish")
+        @JsonSubTypes.Type(value = ChangeTitleCommand.class, name = "change-title"),
+        @JsonSubTypes.Type(value = ApproveCommand.class, name = "approve"),
+        @JsonSubTypes.Type(value = RejectCommand.class, name = "reject"),
+        @JsonSubTypes.Type(value = CancelTaskCommand.class, name = "cancel"),
+        @JsonSubTypes.Type(value = CompleteTaskCommand.class, name = "complete")
 })
 public interface TaskCommand {
 
-    Task execute(@NotNull final Task task);
+    @NotNull Task execute(@NotNull final Task task);
 
 }

@@ -3,10 +3,10 @@ package com.wearenotch.kluksa.commandstatedemo.domain.commands;
 import com.wearenotch.kluksa.commandstatedemo.domain.state.Task;
 import org.jetbrains.annotations.NotNull;
 
-public class MakeReadyCommand implements TaskCommand {
+public record CompleteTaskCommand() implements TaskCommand {
 
-  @Override
-  public Task execute(@NotNull final Task task) {
-    return task.makeReady();
-  }
+    @Override
+    public @NotNull Task execute(@NotNull final Task task) {
+        return task.complete();
+    }
 }

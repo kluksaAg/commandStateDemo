@@ -4,39 +4,38 @@ import com.wearenotch.kluksa.commandstatedemo.domain.TaskDataContext;
 import com.wearenotch.kluksa.commandstatedemo.service.dto.TaskDetailsDto;
 import org.jetbrains.annotations.NotNull;
 
-public abstract class Task {
+import java.util.function.Function;
 
-  private final TaskDataContext context;
+public interface Task {
 
-  protected Task(Status status, TaskDataContext context) {
-    this.context = context;
-    context.setStatus(status);
-  }
+    @NotNull Task cancel();
 
-  public abstract Task cancel();
+    @NotNull Task complete();
 
-  public abstract Task complete();
+    @NotNull Task approve();
 
-  public abstract Task approve();
+    @NotNull Task reject();
 
-  public abstract Task reject();
+    @NotNull Task setTitle(@NotNull final String title);
 
-  public abstract Task makeReady();
+    @NotNull TaskDetailsDto toDto();
 
-  protected TaskDataContext getContext(){
-    return context;
-  }
+    enum Status {
+        ACTIVE(ActiveTask::new),
+        READY(ReadyTask::new),
+        NOT_READY(NotReadyTask::new),
+        COMPLETED(CompletedTask::new),
+        CANCELED(CanceledTask::new);
 
-  public TaskDetailsDto toDto() {
-    return new TaskDetailsDto(context.getId(), context.getTitle(), context.getApproved(), context.getStatus());
-  }
+        private final @NotNull Function<TaskDataContext, Task> factory;
 
-  public Task setTitle(@NotNull final String title) {
-    context.setTitle(title);
-    return this;
-  }
+        Status(@NotNull final Function<TaskDataContext, Task> factory) {
+            this.factory = factory;
+        }
 
-  public enum Status {
-    ACTIVE, READY, ALMOST_READY, FINISHED, CANCELED
-  }
+        public Task createTask(@NotNull final TaskDataContext tdc) {
+            tdc.setStatus(this);
+            return factory.apply(tdc);
+        }
+    }
 }

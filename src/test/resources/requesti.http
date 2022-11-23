@@ -10,37 +10,33 @@ POST http://localhost:8080/tasks
 Content-Type: application/json
 
 {
-   "title": "Drugi vazan task"
+  "title": "Neki vazan task"
 }
-###
 
-PUT http://localhost:8080/tasks/2/command
+###
+PUT http://localhost:8080/tasks/1
 Content-Type: application/json
 
 {
-  "cmd" : "finish"
+  "cmd": "approve"
 }
+
 ###
-PUT http://localhost:8080/tasks/1/command
+PUT http://localhost:8080/tasks/2
 Content-Type: application/json
 
 {
-  "cmd" : "approve"
+  "cmd": "reject"
 }
+
 ###
-PUT http://localhost:8080/tasks/1/command
+PUT http://localhost:8080/tasks/1
 Content-Type: application/json
 
 {
-  "cmd" : "reject"
+  "cmd": "change-title",
+  "title": "Novi naslov"
 }
-###
-PUT http://localhost:8080/tasks/1/command
-Content-Type: application/json
 
-{
-  "cmd" : "change-title",
-  "title" : "Novi naslov"
-}
 ###
 
